@@ -1,6 +1,8 @@
-# Action: Play Ansible Playbook
+# Action: Play Ansible Playbook with promtool available
 
-Github Action for running Ansible Playbooks.
+Github Action for running Ansible Playbooks, using promtool for validate command.
+
+Based on https://github.com/peimanja/promtool-github-actions and https://github.com/arillso/action.playbook
 
 ## Inputs
 
@@ -145,40 +147,13 @@ required: false
 
 ```yaml
 - name: Play Ansible Playbook
-  uses: arillso/action.playbook@master
+  uses: wbwork/github-action-promtool-with-ansible
   with:
     playbook: tests/playbook.yml
     inventory: tests/hosts.yml
-    galaxy_file: tests/requirements.yml
+    connection: local
+    extra_vars: "foo=bar,bar=baz"
   env:
     ANSIBLE_HOST_KEY_CHECKING: 'false'
     ANSIBLE_DEPRECATION_WARNINGS: 'false'
 ```
-
-## Contributors
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tr>
-    <td align="center"><a href="https://sbaerlocher.ch"><img src="https://avatars1.githubusercontent.com/u/4160387?v=4" width="100px;" alt=""/><br /><sub><b>Simon Baerlocher</b></sub></a><br /><a href="https://github.com/arillso/action.playbook/commits?author=sbaerlocher" title="Code">💻</a> <a href="#ideas-sbaerlocher" title="Ideas, Planning, & Feedback">🤔</a></td>
-  </tr>
-</table>
-
-<!-- markdownlint-enable -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-
-## License
-
-<!-- markdownlint-disable -->
-
-This project is under the MIT License. See the [LICENSE](licence) file for the full license text.
-
-<!-- markdownlint-enable -->
-
-## Copyright
-
-(c) 2020, Arillso
