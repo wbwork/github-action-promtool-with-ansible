@@ -6,6 +6,8 @@ ENV GO111MODULE=on \
     GOOS=linux \
     GOARCH=amd64
 
+RUN ["/bin/sh", "-c", "apk add --update --no-cache bash ca-certificates curl git jq openssh"]
+
 # Move to working directory /build
 WORKDIR /build
 
@@ -17,6 +19,9 @@ RUN go mod download
 # Build the application
 RUN go build -o main 
 
+# Install promtool
+RUN /build/install-promtool.sh
+
 FROM arillso/ansible:2.9.7 as production
 
 # Copy binary from build to main folder
@@ -24,9 +29,6 @@ COPY --from=builder /build/main /usr/local/bin
 
 # Run as root
 USER root
-
-# Install promtool
-RUN ./install-promtool.sh
 
 # Command to run when starting the container
 CMD ["main"]
