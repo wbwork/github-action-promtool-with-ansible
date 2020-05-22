@@ -1,0 +1,31 @@
+---
+
+- hosts: localhost
+  vars_files:
+    - "instances/{{ ec2_tag_Instance }}/aws/regions/{{ ec2_region }}/monitoring/prometheus/{{ec2_tag_Target}}/ansible_vars/prometheus.yml"
+  become: true
+  tasks:
+    - name: Include global instance vars defaults
+      include_vars:
+        dir: "instances/{{ ec2_tag_Instance }}/ansible_vars/"
+      ignore_errors: true
+    - name: Include global region vars
+      include_vars:
+        dir: "instances/{{ ec2_tag_Instance }}/aws/regions/{{ ec2_region }}/ansible_vars/"
+      ignore_errors: true
+    - name: configure prometheus alerting rules
+      become: true
+      template:
+        src: "{{ item }}"
+        dest: "/etc/prometheus/rules/rules.yml"
+        validate: /usr/local/bin/promtool check rules %s
+      with_first_found:
+        - "instances/{{ ec2_tag_Instance }}/aws/regions/{{ ec2_region }}/monitoring/prometheus/{{ec2_tag_Target}}/rules.yml"
+    - name: configure prometheus scrapers and rules destination
+      become: true
+      template:
+        src: "{{ item }}"
+        dest: "/etc/prometheus/prometheus.yml"
+        validate: /usr/local/bin/promtool check config %s
+      with_first_found:
+        - "instances/{{ ec2_tag_Instance }}/aws/regions/{{ ec2_region }}/monitoring/prometheus/{{ec2_tag_Target}}/prometheus.yml"
