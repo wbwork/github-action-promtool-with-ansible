@@ -25,7 +25,7 @@ RUN /build/install-promtool.sh
 FROM arillso/ansible:2.9.7 as production
 
 # Copy binary from build to main folder
-COPY --from=builder /build/main /usr/local/bin
+COPY --from=builder /build/main /usr/local/bin/promtool /usr/local/bin/
 
 # Run as root
 USER root
