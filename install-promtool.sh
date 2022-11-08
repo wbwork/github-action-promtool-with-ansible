@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function installPromtool {
-  promtoolVersion="latest"
+  promtoolVersion=$1
   if [[ "${promtoolVersion}" == "latest" ]]; then
     echo "Checking the latest version of Promtool"
     promtoolVersion=$(git ls-remote --tags --refs --sort="v:refname"  https://github.com/prometheus/prometheus | grep -v '[-].*' | tail -n1 | sed 's/.*\///' | cut -c 2-)
@@ -31,4 +31,5 @@ function installPromtool {
   echo "Successfully unzipped Promtool v${promtoolVersion}"
 }
 
-installPromtool
+promtoolv=${PROMTOOL_VERSION:="latest"}
+installPromtool $promtoolv
