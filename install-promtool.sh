@@ -19,7 +19,6 @@ function installPromtool {
     fi
   fi
 
-  #url="https://github.com/prometheus/prometheus/releases/download/v${promtoolVersion}/prometheus-${promtoolVersion}.linux-amd64.tar.gz"
   echo "Downloading Promtool v${promtoolVersion}"
   http_code=$(downloadPromtool $promtoolVersion)
   if [ "${?}" -ne 0 ]; then
